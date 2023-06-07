@@ -2,6 +2,8 @@
 # Part 1   #
 ############
 
+from sys import argv
+
 
 class MelonType:
     """A species of melon at a melon farm."""
@@ -131,9 +133,9 @@ class Melon:
                  ):
         
         self.melon_type = melon_type
-        self.shape_rating = int(shape_rating)
-        self.color_rating = int(color_rating)
-        self.from_field = int(from_field)
+        self.shape_rating = shape_rating
+        self.color_rating = color_rating
+        self.from_field = from_field
         self.harvested_by = harvested_by
 
     def is_sellable(self):
@@ -164,9 +166,9 @@ def make_melons(melon_types):
         word = line.strip().split(" ")
 
         melon = Melon(melons_by_id[word[5]],    # MelonType
-                    word[1],                    # Shape Rating
-                    word[3],                    # Color Rating
-                    word[10].replace("#", ""),  # Field Harvested From
+                    int(word[1]),                    # Shape Rating
+                    int(word[3]),                    # Color Rating
+                    int(word[10].replace("#", "")),  # Field Harvested From
                     word[8]                     # Harvested By
                       )
         
@@ -183,6 +185,30 @@ def make_melons(melon_types):
     #                 )
     
     # all_melons.append(melon_1)
+
+def make_melons_from_file(melon_types, file_path):
+    """Returns a list of Melon objects."""
+
+    all_melons = []
+    melons_by_id = make_melon_type_lookup(melon_types)
+
+
+    with open(file_path, "r") as file:
+
+        for line in file:
+            word = line.strip().split(" ")
+
+            melon = Melon(melons_by_id[word[5]],    # MelonType
+                        int(word[1]),                    # Shape Rating
+                        int(word[3]),                    # Color Rating
+                        int(word[11].replace("#", "")),  # Field Harvested From
+                        word[8]                     # Harvested By
+                        )
+            
+            all_melons.append(melon)
+
+    return all_melons
+
 
 
 def get_sellability_report(melons):
@@ -212,4 +238,9 @@ for code, melon in make_melon_type_lookup(make_melon_types()).items():
            + "\n"
            )
     
-get_sellability_report(make_melons(make_melon_types()))
+
+if __name__ == "__main__":
+
+    input_file_path = argv[1]
+
+    get_sellability_report(make_melons_from_file(make_melon_types(), input_file_path))
