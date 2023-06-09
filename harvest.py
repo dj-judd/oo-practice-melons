@@ -221,11 +221,14 @@ def get_sellability_report(melons):
             sellable_text = "(NOT SELLABLE)"
         
         print(f"Harvested by {melon.harvested_by} " \
-              f"from Field {melon.from_field} " \
+              f"{bold_green}from {bold_blue}Field {green}{melon.from_field}{reset_text} " \
               f"{sellable_text}")
 
 
 print_pairing_info(make_melon_types())
+
+
+#print(make_melon_type_lookup(make_melon_types()))
 
 
 print("The dictionary that was created:")
@@ -242,5 +245,10 @@ for code, melon in make_melon_type_lookup(make_melon_types()).items():
 if __name__ == "__main__":
 
     input_file_path = argv[1]
+
+    bold_green = "\033[1;32m"
+    bold_blue = "\033[1;34m"
+    green = "\033[0;32m"
+    reset_text = "\033[0m"
 
     get_sellability_report(make_melons_from_file(make_melon_types(), input_file_path))
